@@ -8,7 +8,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
-- Added `getSearchResultsURL` method to get URL for search results
+- Added `getSearchResultsURL` method to get URL for search results.
+
+### Fixed
+
+- Added `null` value support for `LanguageCode2NameMap`.
 
 ## [1.1.0] - 2025-11-28
 

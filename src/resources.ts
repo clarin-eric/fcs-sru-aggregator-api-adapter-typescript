@@ -24,7 +24,7 @@ export interface InitData {
  * @see {@link getLanguages} API endpoint
  */
 export interface LanguageCode2NameMap {
-  [code: string]: string;
+  [code: string]: string | null;
 }
 
 /**
