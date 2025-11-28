@@ -118,7 +118,7 @@ export interface ExampleQuery {
 /**
  * Query types (also used as query parameters to REST API)
  */
-export type QueryType = "cql" | "fcs" | "fcs";
+export type QueryType = "cql" | "fcs" | "lex";
 
 /**
  * FCS protocol versions
