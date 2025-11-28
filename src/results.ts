@@ -182,6 +182,23 @@ export async function postSearchMoreResults(
   return response.data as string; // UUID with searchID
 }
 
+export function getSearchResultsURL(
+  axios: AxiosInstance,
+  searchID: string,
+  resourceID: string | undefined = undefined,
+  metaOnly: boolean = false
+) {
+  if (!searchID) throw new Error('Invalid "searchID" parameter!');
+
+  let url = `search/${searchID}`;
+  if (metaOnly) url = `${url}/metaonly`;
+
+  if (resourceID !== undefined)
+    url = `${url}?resourceId=${encodeURIComponent(resourceID)}`;
+
+  return axios.getUri({ url });
+}
+
 export async function getSearchResults(axios: AxiosInstance, searchID: string) {
   if (!searchID) throw new Error('Invalid "searchID" parameter!');
 
