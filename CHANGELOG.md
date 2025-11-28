@@ -6,4 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
-[Unreleased]: https://github.com/clarin-eric/fcs-sru-aggregator-api-adapter-typescript/compare/82e3617...HEAD
+## [1.0.0] - 2025-11-28
+
+Initial release.
+
+Extracted FCS Aggregator REST API adatper code from [`textplus-fcs-store`](https://git.saw-leipzig.de/text-plus/FCS/textplus-fcs-store) and [`fcs-sru-aggregator-ui`](https://github.com/clarin-eric/fcs-sru-aggregator-ui/) to avoid duplication and ease reuse.
+
+### Added
+
+- Small `tsdown` library project with License, Changelog and default configuration.
+- Modularized typed interfaces with `axios` request methods.
+- Mini test suite. WIP.
+
+[Unreleased]: https://github.com/clarin-eric/fcs-sru-aggregator-api-adapter-typescript/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/clarin-eric/fcs-sru-aggregator-api-adapter-typescript/releases/tag/v1.0.0

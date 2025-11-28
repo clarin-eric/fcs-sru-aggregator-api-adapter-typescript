@@ -1,4 +1,11 @@
+# environment
 node_modules
+
+# build artifacts
 dist
+fcs-sru-aggregator-api-adapter-typescript-*.tgz
+
+# other stuff?
 *.log
 .DS_Store
+
