@@ -1,6 +1,7 @@
-# tsdown-starter
+# TypeScript REST API Adapter for FCS SRU Aggregator
 
-A starter for creating a TypeScript package.
+See [CLARIN Federated Content Search Aggregator](https://github.com/clarin-eric/fcs-sru-aggregator).
+
 
 ## Development
 
