@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- Added CommonJS build.
+
+### Removed
+
+- Removed unused `bumpp` dev dependency, added as hint to `README.md`.
+
 ## [1.0.0] - 2025-11-28
 
 Initial release.
