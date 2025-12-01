@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.3.0] - 2025-12-01
+
+### Added
+
+- Added `postSearchStop` method and `cancelled` properties
+  - Handle not supported `postSearchStop` (`search/${searchID}/stop` endpoint) by intercepting `404` and returning `false`.
+
 ## [1.2.0] - 2025-11-28
 
 ### Added
@@ -43,7 +50,8 @@ Extracted FCS Aggregator REST API adatper code from [`textplus-fcs-store`](https
 - Modularized typed interfaces with `axios` request methods.
 - Mini test suite. WIP.
 
-[Unreleased]: https://github.com/clarin-eric/fcs-sru-aggregator-api-adapter-typescript/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/clarin-eric/fcs-sru-aggregator-api-adapter-typescript/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/clarin-eric/fcs-sru-aggregator-api-adapter-typescript/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/clarin-eric/fcs-sru-aggregator-api-adapter-typescript/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/clarin-eric/fcs-sru-aggregator-api-adapter-typescript/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/clarin-eric/fcs-sru-aggregator-api-adapter-typescript/releases/tag/v1.0.0

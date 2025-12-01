@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import type { AxiosInstance } from "axios";
 
 import type { LexFieldType, Resource, VirtualLexFieldType } from "./resources";
@@ -10,7 +11,7 @@ export interface PostSearchData {
   query: string;
   queryType: string;
   language: string;
-  numberOfResults: string;
+  numberOfResults: number | string;
   resourceIds: string[];
 }
 
@@ -30,6 +31,7 @@ export interface PostSearchMoreResultsData {
  */
 export interface SearchResults {
   inProgress: number;
+  cancelled?: number;
   results: ResourceSearchResult[];
 }
 
@@ -41,6 +43,7 @@ export interface SearchResults {
  */
 export interface SearchResultsMetaOnly {
   inProgress: number;
+  cancelled?: number;
   results: ResourceSearchResultMetaOnly[];
 }
 
@@ -53,6 +56,8 @@ export interface ResourceSearchResultMetaOnly {
   endpointUrl: string;
 
   inProgress: boolean;
+  cancelled?: boolean;
+
   nextRecordPosition: number;
   numberOfRecords: number;
   numberOfRecordsLoaded: number;
@@ -180,6 +185,34 @@ export async function postSearchMoreResults(
     response
   );
   return response.data as string; // UUID with searchID
+}
+
+export async function postSearchStop(axios: AxiosInstance, searchID: string) {
+  try {
+    const response = await axios.post(
+      `search/${searchID}/stop`,
+      {},
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+    console.debug("[postStopSearch]", { searchID }, response);
+    return response.status === 202 || response.status !== 204;
+  } catch (err) {
+    if (err instanceof AxiosError) {
+      if (
+        err.status === 404 &&
+        err.response?.data.message === "HTTP 404 Not Found"
+      ) {
+        // method is not yet supported by the API, so return `false`
+        console.warn("Search stopping is not supported at this API!");
+        return false;
+      }
+    }
+    throw err;
+  }
 }
 
 export function getSearchResultsURL(

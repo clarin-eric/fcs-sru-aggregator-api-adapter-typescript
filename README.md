@@ -4,10 +4,10 @@ See [CLARIN Federated Content Search Aggregator](https://github.com/clarin-eric/
 
 ## Installation
 
-Install from repository for version `v1.2.0`
+Install from repository for version `v1.3.0`
 
 ```bash
-npm install git+https://github.com/clarin-eric/fcs-sru-aggregator-api-adapter-typescript.git#v1.2.0
+npm install git+https://github.com/clarin-eric/fcs-sru-aggregator-api-adapter-typescript.git#v1.3.0
 ```
 
 TODO: Install from npm package registry
