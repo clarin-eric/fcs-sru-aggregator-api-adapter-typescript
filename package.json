@@ -1,8 +1,14 @@
 {
-  "name": "fcs-sru-aggregator-api-adapter-typescript",
-  "private": true,
-  "version": "1.3.0",
+  "name": "@clarin-eric/fcs-sru-aggregator-api-adapter-typescript",
+  "version": "1.4.0",
   "description": "A typescript API adapter for the CLARIN FCS SRU Aggregator REST API",
+  "keywords": [
+    "fcs",
+    "search",
+    "rest",
+    "api",
+    "clarin"
+  ],
   "type": "module",
   "license": "GPL-3.0-or-later",
   "homepage": "https://github.com/clarin-eric/fcs-sru-aggregator-api-adapter-typescript#readme",
@@ -22,8 +28,8 @@
   "types": "./dist/index.d.cts",
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
     },
     "./package.json": "./package.json"
   },
@@ -31,8 +37,7 @@
     "build": "tsdown",
     "dev": "tsdown --watch",
     "test": "vitest",
-    "typecheck": "tsc --noEmit",
-    "prepare": "npm run build"
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@types/node": "^25.0.3",

@@ -6,9 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-01-09
+
 ### Changed
 
 - Bump dev dependencies
+- Changed package name to include `@clarin-eric/` organization scope
+
+### Removed
+
+- Removed `prepare` script from `package.json`, used for git+tag URL installs
 
 ## [1.3.0] - 2025-12-01
 
