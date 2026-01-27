@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-01-27
+
+### Changed
+
+- Relax interface for `getURLForDownload` and `getURLForWeblicht` methods: arguments `language` and `languageFilter` are now optional and nullable
+- Bump dependencies (`axios` to 1.13.3, + dev dependencies)
+
 ## [1.4.0] - 2026-01-09
 
 ### Changed
