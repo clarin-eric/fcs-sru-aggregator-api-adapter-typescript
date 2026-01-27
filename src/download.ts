@@ -14,14 +14,18 @@ export function getURLForDownload(
   searchID: string,
   resourceID: string,
   format: DownloadFormats,
-  language: string,
-  languageFilter: LanguageFilterOptions
+  language?: string | null,
+  languageFilter?: LanguageFilterOptions | null,
 ) {
   const params = new URLSearchParams({
     resourceId: resourceID, // encodeURIComponent
     format: format,
   });
-  if (languageFilter === "byGuess" || languageFilter === "byMetaAndGuess") {
+  if (
+    (languageFilter === "byGuess" || languageFilter === "byMetaAndGuess") &&
+    language !== undefined &&
+    language !== null
+  ) {
     params.set("filterLanguage", language);
   }
   const relURL = `search/${searchID}/download?${params.toString()}`;
@@ -33,8 +37,8 @@ export function getURLForWeblicht(
   searchID: string,
   resourceID: string,
   languageForWeblicht: string | null,
-  language: string,
-  languageFilter: LanguageFilterOptions
+  language?: string | null,
+  languageFilter?: LanguageFilterOptions | null,
 ) {
   const params = new URLSearchParams({
     resourceId: resourceID, // encodeURIComponent
@@ -42,8 +46,9 @@ export function getURLForWeblicht(
   if (languageForWeblicht) {
     params.set("filterLanguage", languageForWeblicht);
   } else if (
-    languageFilter === "byGuess" ||
-    languageFilter === "byMetaAndGuess"
+    (languageFilter === "byGuess" || languageFilter === "byMetaAndGuess") &&
+    language !== undefined &&
+    language !== null
   ) {
     params.set("filterLanguage", language);
   }
