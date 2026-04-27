@@ -75,7 +75,7 @@ export interface Endpoint {
 }
 
 export interface EndpointInstitution {
-  name: string;
+  name: null | string | MultilingualStrings;
   link: string | null;
   endpoints: Endpoint[];
 
@@ -209,7 +209,7 @@ export type VirtualLexFieldType = "lang";
 
 export async function getInitData(
   axios: AxiosInstance,
-  params?: ExtraScopingParams
+  params?: ExtraScopingParams,
 ) {
   const urlParams = new URLSearchParams();
   if (params?.consortia !== undefined && params?.consortia !== null) {
@@ -227,7 +227,7 @@ export async function getInitData(
 
 export async function getResources(
   axios: AxiosInstance,
-  params?: ExtraScopingParams
+  params?: ExtraScopingParams,
 ) {
   const urlParams = new URLSearchParams();
   if (params?.consortia !== undefined && params?.consortia !== null) {
@@ -246,7 +246,7 @@ export async function getResources(
 
 export async function getLanguages(
   axios: AxiosInstance,
-  params?: ExtraScopingParams
+  params?: ExtraScopingParams,
 ) {
   const urlParams = new URLSearchParams();
   if (params?.consortia !== undefined && params?.consortia !== null) {
