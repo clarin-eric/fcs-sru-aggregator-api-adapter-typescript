@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [2.0.0] - 2026-06-19
+
+### Changed
+
+- **Breaking**: removed `axios` dependency and switch to native `fetch`
+- Updated dev dependencies
+
 ## [1.5.1] - 2026-02-17
 
 ### Changed
@@ -74,7 +81,8 @@ Extracted FCS Aggregator REST API adatper code from [`textplus-fcs-store`](https
 - Modularized typed interfaces with `axios` request methods.
 - Mini test suite. WIP.
 
-[Unreleased]: https://github.com/clarin-eric/fcs-sru-aggregator-api-adapter-typescript/compare/v1.5.1...HEAD
+[Unreleased]: https://github.com/clarin-eric/fcs-sru-aggregator-api-adapter-typescript/compare/v2.0.0...HEAD
+[2.0.0]: https://github.com/clarin-eric/fcs-sru-aggregator-api-adapter-typescript/compare/v1.5.1...v2.0.0
 [1.5.1]: https://github.com/clarin-eric/fcs-sru-aggregator-api-adapter-typescript/compare/v1.5.0...v1.5.1
 [1.5.0]: https://github.com/clarin-eric/fcs-sru-aggregator-api-adapter-typescript/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/clarin-eric/fcs-sru-aggregator-api-adapter-typescript/compare/v1.3.0...v1.4.0

@@ -1,4 +1,5 @@
-import type { AxiosInstance } from "axios";
+import type { ClientParams } from "./utils";
+import { doGet } from "./utils";
 
 // --------------------------------------------------------------------------
 
@@ -43,11 +44,8 @@ export type Consortium =
 // --------------------------------------------------------------------------
 // API methods
 
-export async function getConsortia(axios: AxiosInstance) {
-  const url = "consortia";
-  const response = await axios.get(url);
-  console.debug("[getConsortia]", response);
-  return (response.data as (string | null)[]).filter(
-    (consortium) => consortium !== null
-  );
+export async function getConsortia(params: ClientParams) {
+  const consortia = await doGet<(string | null)[]>("consortia", params);
+  console.debug("[getConsortia]", consortia);
+  return consortia.filter((consortium) => consortium !== null);
 }

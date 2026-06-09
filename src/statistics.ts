@@ -1,9 +1,7 @@
-import type { AxiosInstance } from "axios";
-
 import type { ExtraScopingParams } from "./consortia";
-import { REQ_PARAM_CONSORTIA } from "./consortia";
 import type { Capability, ProtocolVersion } from "./resources";
-import type { Diagnostic, Exception } from "./utils";
+import type { ClientParams, Diagnostic, Exception } from "./utils";
+import { doGet } from "./utils";
 
 // --------------------------------------------------------------------------
 // API response types
@@ -76,19 +74,11 @@ export interface ErrorInfo {
 // API
 
 export async function getStatisticsData(
-  axios: AxiosInstance,
-  params?: ExtraScopingParams
+  params: ClientParams & ExtraScopingParams,
 ) {
-  const urlParams = new URLSearchParams();
-  if (params?.consortia !== undefined && params?.consortia !== null) {
-    urlParams.set(REQ_PARAM_CONSORTIA, params.consortia);
-  }
-  const url =
-    "statistics" + (urlParams.entries().next().done ? "" : `?${urlParams}`);
-
-  const response = await axios.get(url);
-  console.debug("[getStatisticsData]", response);
-  return response.data as Statistics;
+  const result = await doGet<Statistics>("statistics", params);
+  console.debug("[getStatisticsData]", result);
+  return result;
 
   // TODO: mock
   // return {

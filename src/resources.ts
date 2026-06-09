@@ -1,8 +1,6 @@
-import type { AxiosInstance } from "axios";
-
 import type { Consortium, ExtraScopingParams } from "./consortia";
-import { REQ_PARAM_CONSORTIA } from "./consortia";
-import type { MultilingualStrings } from "./utils";
+import type { ClientParams, MultilingualStrings } from "./utils";
+import { doGet } from "./utils";
 
 // --------------------------------------------------------------------------
 // API response types
@@ -207,57 +205,28 @@ export type VirtualLexFieldType = "lang";
 // --------------------------------------------------------------------------
 // API methods
 
-export async function getInitData(
-  axios: AxiosInstance,
-  params?: ExtraScopingParams,
-) {
-  const urlParams = new URLSearchParams();
-  if (params?.consortia !== undefined && params?.consortia !== null) {
-    urlParams.set(REQ_PARAM_CONSORTIA, params.consortia);
-  }
-  const url = "init" + (urlParams.entries().next().done ? "" : `?${urlParams}`);
-
-  const response = await axios.get(url);
-  console.debug("[getInitData]", response);
-  return response.data as InitData;
+export async function getInitData(params: ClientParams & ExtraScopingParams) {
+  const result = await doGet<InitData>("init", params);
+  console.debug("[getInitData]", result);
+  return result;
 
   // TODO: mock
   // return { languages: [], resources: [], weblichtLanguages: [] }
 }
 
-export async function getResources(
-  axios: AxiosInstance,
-  params?: ExtraScopingParams,
-) {
-  const urlParams = new URLSearchParams();
-  if (params?.consortia !== undefined && params?.consortia !== null) {
-    urlParams.set(REQ_PARAM_CONSORTIA, params.consortia);
-  }
-  const url =
-    "resources" + (urlParams.entries().next().done ? "" : `?${urlParams}`);
-
-  const response = await axios.get(url);
-  console.debug("[getResources]", response);
-  return response.data as Resource[];
+export async function getResources(params: ClientParams & ExtraScopingParams) {
+  const result = await doGet<Resource[]>("resources", params);
+  console.debug("[getResources]", result);
+  return result;
 
   // TODO: mock
   // return [] satisfies Resource[]
 }
 
-export async function getLanguages(
-  axios: AxiosInstance,
-  params?: ExtraScopingParams,
-) {
-  const urlParams = new URLSearchParams();
-  if (params?.consortia !== undefined && params?.consortia !== null) {
-    urlParams.set(REQ_PARAM_CONSORTIA, params.consortia);
-  }
-  const url =
-    "languages" + (urlParams.entries().next().done ? "" : `?${urlParams}`);
-
-  const response = await axios.get(url);
-  console.debug("[getLanguages]", response);
-  return response.data as LanguageCode2NameMap;
+export async function getLanguages(params: ClientParams & ExtraScopingParams) {
+  const result = await doGet<LanguageCode2NameMap>("languages", params);
+  console.debug("[getLanguages]", result);
+  return result;
 
   // TODO: mock
   // return {} satisfies LanguageCode2NameMap

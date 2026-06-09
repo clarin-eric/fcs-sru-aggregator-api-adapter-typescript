@@ -1,8 +1,6 @@
-import { AxiosError } from "axios";
-import type { AxiosInstance } from "axios";
-
 import type { LexFieldType, Resource, VirtualLexFieldType } from "./resources";
-import type { Diagnostic, Exception } from "./utils";
+import type { ClientParams, Diagnostic, Exception } from "./utils";
+import { doGet, doPost, doPostRaw, makeURL } from "./utils";
 
 // --------------------------------------------------------------------------
 // API search request types
@@ -157,69 +155,45 @@ export interface LexValue {
 // API methods
 
 export async function postSearch(
-  axios: AxiosInstance,
-  searchParams: PostSearchData
+  params: ClientParams,
+  searchParams: PostSearchData,
 ) {
-  const response = await axios.post("search", searchParams, {
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-  });
-  console.debug("[postSearch]", searchParams, response);
-  return response.data as string; // UUID with searchID
+  const result = await doPost<string>("search", searchParams, params);
+  console.debug("[postSearch]", searchParams, result);
+  return result; // UUID with searchID
 }
 
 export async function postSearchMoreResults(
-  axios: AxiosInstance,
+  params: ClientParams,
   searchID: string,
-  searchParams: PostSearchMoreResultsData
+  searchParams: PostSearchMoreResultsData,
 ) {
-  const response = await axios.post(`search/${searchID}`, searchParams, {
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-  });
-  console.debug(
-    "[postSearchMoreResults]",
-    { searchID, searchParams },
-    response
+  const result = await doPost<string>(
+    `search/${searchID}`,
+    searchParams,
+    params,
   );
-  return response.data as string; // UUID with searchID
+  console.debug("[postSearchMoreResults]", { searchID, searchParams }, result);
+  return result; // UUID with searchID
 }
 
-export async function postSearchStop(axios: AxiosInstance, searchID: string) {
+export async function postSearchStop(params: ClientParams, searchID: string) {
   try {
-    const response = await axios.post(
-      `search/${searchID}/stop`,
-      {},
-      {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      }
-    );
+    const response = await doPostRaw(`search/${searchID}/stop`, {}, params);
     console.debug("[postStopSearch]", { searchID }, response);
     return response.status === 202 || response.status !== 204;
   } catch (err) {
-    if (err instanceof AxiosError) {
-      if (
-        err.status === 404 &&
-        err.response?.data.message === "HTTP 404 Not Found"
-      ) {
-        // method is not yet supported by the API, so return `false`
-        console.warn("Search stopping is not supported at this API!");
-        return false;
-      }
-    }
-    throw err;
+    // method is not yet supported by the API, so return `false`
+    console.warn("Search stopping is not supported at this API!", err);
+    return false;
   }
 }
 
 export function getSearchResultsURL(
-  axios: AxiosInstance,
+  params: ClientParams,
   searchID: string,
   resourceID: string | undefined = undefined,
-  metaOnly: boolean = false
+  metaOnly: boolean = false,
 ) {
   if (!searchID) throw new Error('Invalid "searchID" parameter!');
 
@@ -229,94 +203,86 @@ export function getSearchResultsURL(
   if (resourceID !== undefined)
     url = `${url}?resourceId=${encodeURIComponent(resourceID)}`;
 
-  return axios.getUri({ url });
+  return makeURL(url, params);
 }
 
-export async function getSearchResults(axios: AxiosInstance, searchID: string) {
+export async function getSearchResults(params: ClientParams, searchID: string) {
   if (!searchID) throw new Error('Invalid "searchID" parameter!');
 
-  const response = await axios.get(`search/${searchID}`);
-  console.debug("[getSearchResults]", { searchID }, response);
-
-  if (
-    (response.data as SearchResults)?.results?.length > 0 &&
-    (response.data as SearchResults).results[0].records === undefined
-  ) {
-    console.warn(
-      "Using legacy FCS SRU Aggregator API with Search Results not in '.records'!",
-      { searchID },
-      response.data
-    );
-  }
-
-  return response.data as SearchResults;
+  const result = await doGet<SearchResults>(`search/${searchID}`, params);
+  console.debug("[getSearchResults]", { searchID }, result);
+  return result;
 }
 
 export async function getSearchResultsMetaOnly(
-  axios: AxiosInstance,
-  searchID: string
+  params: ClientParams,
+  searchID: string,
 ) {
   if (!searchID) throw new Error('Invalid "searchID" parameter!');
 
-  const response = await axios.get(`search/${searchID}/metaonly`);
-  console.debug("[getSearchResultsMetaOnly]", { searchID }, response);
-  return response.data as SearchResultsMetaOnly;
+  const result = await doGet<SearchResultsMetaOnly>(
+    `search/${searchID}/metaonly`,
+    params,
+  );
+  console.debug("[getSearchResultsMetaOnly]", { searchID }, result);
+  return result;
 }
 
 export async function getSearchResultsMetaOnlyForResource(
-  axios: AxiosInstance,
+  params: ClientParams,
   searchID: string,
-  resourceID: string
+  resourceID: string,
 ) {
   if (!searchID) throw new Error('Invalid "searchID" parameter!');
   if (!resourceID) throw new Error('Invalid "resourceID" parameter!');
 
-  const response = await axios.get(
-    `search/${searchID}/metaonly?resourceId=${encodeURIComponent(resourceID)}`
+  // TODO: search params via makeURL?
+  const result = await doGet<SearchResultsMetaOnly>(
+    `search/${searchID}/metaonly?resourceId=${encodeURIComponent(resourceID)}`,
+    params,
   );
   console.debug(
     "[getSearchResultsMetaOnlyForResource]",
     { searchID, resourceID },
-    response
+    result,
   );
 
-  const results = (response.data as SearchResultsMetaOnly).results.filter(
-    (result) => result.id === resourceID
-  );
+  const results = result.results.filter((result) => result.id === resourceID);
   if (results.length === 0)
     throw new Error(
-      `Results (meta) for resource not found! (searchId: ${searchID}, resourceId: ${resourceID})`
+      `Results (meta) for resource not found! (searchId: ${searchID}, resourceId: ${resourceID})`,
     );
 
   return results[0];
 }
 
 export async function getSearchResultDetails(
-  axios: AxiosInstance,
+  params: ClientParams,
   searchID: string,
-  resourceID: string
+  resourceID: string,
 ) {
   if (!searchID) throw new Error('Invalid "searchID" parameter!');
   if (!resourceID) throw new Error('Invalid "resourceID" parameter!');
 
-  const response = await axios.get(
-    `search/${searchID}?resourceId=${encodeURIComponent(resourceID)}`
+  const result = await doGet<SearchResults>(
+    `search/${searchID}?resourceId=${encodeURIComponent(resourceID)}`,
+    params,
   );
-  console.debug("[getSearchResultDetails]", { searchID, resourceID }, response);
+  console.debug("[getSearchResultDetails]", { searchID, resourceID }, result);
 
-  const results = (response.data as SearchResults).results.filter(
-    (result) => result.resource.id === resourceID
+  const results = result.results.filter(
+    (result) => result.resource.id === resourceID,
   );
   if (results.length === 0)
     throw new Error(
-      `Results for resource not found! (searchId: ${searchID}, resourceId: ${resourceID})`
+      `Results for resource not found! (searchId: ${searchID}, resourceId: ${resourceID})`,
     );
 
   if (results[0].records === undefined) {
     console.warn(
       "Using legacy FCS SRU Aggregator API with Search Results not in '.records'!",
       { searchID },
-      results
+      results,
     );
   }
 

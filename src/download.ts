@@ -1,4 +1,5 @@
-import type { AxiosInstance } from "axios";
+import type { ClientParams } from "./utils";
+import { makeURL } from "./utils";
 
 // --------------------------------------------------------------------------
 // parameter types
@@ -10,48 +11,48 @@ export type LanguageFilterOptions = "byMeta" | "byGuess" | "byMetaAndGuess";
 // API methods
 
 export function getURLForDownload(
-  axios: AxiosInstance,
+  params: ClientParams,
   searchID: string,
   resourceID: string,
   format: DownloadFormats,
   language?: string | null,
   languageFilter?: LanguageFilterOptions | null,
 ) {
-  const params = new URLSearchParams({
-    resourceId: resourceID, // encodeURIComponent
-    format: format,
-  });
+  const url = makeURL(`search/${searchID}/download`, params);
+
+  url.searchParams.set("resourceId", resourceID); // encodeURIComponent
+  url.searchParams.set("format", format);
   if (
     (languageFilter === "byGuess" || languageFilter === "byMetaAndGuess") &&
     language !== undefined &&
     language !== null
   ) {
-    params.set("filterLanguage", language);
+    url.searchParams.set("filterLanguage", language);
   }
-  const relURL = `search/${searchID}/download?${params.toString()}`;
-  return axios.getUri({ url: relURL });
+
+  return url;
 }
 
 export function getURLForWeblicht(
-  axios: AxiosInstance,
+  params: ClientParams,
   searchID: string,
   resourceID: string,
   languageForWeblicht: string | null,
   language?: string | null,
   languageFilter?: LanguageFilterOptions | null,
 ) {
-  const params = new URLSearchParams({
-    resourceId: resourceID, // encodeURIComponent
-  });
+  const url = makeURL(`search/${searchID}/toWeblicht`, params);
+
+  url.searchParams.set("resourceId", resourceID); // encodeURIComponent
   if (languageForWeblicht) {
-    params.set("filterLanguage", languageForWeblicht);
+    url.searchParams.set("filterLanguage", languageForWeblicht);
   } else if (
     (languageFilter === "byGuess" || languageFilter === "byMetaAndGuess") &&
     language !== undefined &&
     language !== null
   ) {
-    params.set("filterLanguage", language);
+    url.searchParams.set("filterLanguage", language);
   }
-  const relURL = `search/${searchID}/toWeblicht?${params.toString()}`;
-  return axios.getUri({ url: relURL });
+
+  return url;
 }

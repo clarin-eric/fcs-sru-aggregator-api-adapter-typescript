@@ -47,3 +47,10 @@ npx -y bumpp
 ```bash
 npx -y npm-check-updates -i
 ```
+
+- Publish no npmjs
+
+```bash
+npm login
+npm publish --access public
+```

@@ -3,27 +3,28 @@ import { expect, test, describe, it } from "vitest";
 import * as api from "../src";
 
 describe("makeAxiosClient", () => {
-  test("makeAxiosClient() with baseURL and timeout", () => {
-    const axiosClient = api.makeAxiosClient({
-      baseURL: "http://example.org/rest",
+  test("ClientParams with baseURL and timeout", () => {
+    const clientParams: api.ClientParams = {
+      baseURL: "http://example.org/rest/",
       timeout: 1234,
-    });
+    };
 
-    expect(axiosClient).toHaveProperty(
-      "defaults.baseURL",
-      "http://example.org/rest"
-    );
-    expect(axiosClient).toHaveProperty("defaults.timeout", 1234);
-    expect(axiosClient).toHaveProperty("defaults.responseType", "json");
+    expect(clientParams).toHaveProperty("baseURL", "http://example.org/rest/");
+    expect(clientParams).toHaveProperty("timeout", 1234);
 
-    expect(axiosClient.getUri({ url: "test" })).toBe(
-      "http://example.org/rest/test"
+    expect(api.makeURL("test", clientParams).toString()).toBe(
+      "http://example.org/rest/test",
     );
   });
 
-  test("makeAxiosClient() without arguments to throw an error", () => {
-    expect(() => api.makeAxiosClient({} as api.MakeAxiosClient)).toThrowError(
-      'Invalid "baseURL" parameter!'
+  test("ClientParams.baseURL requires trailing slash", () => {
+    const clientParams: api.ClientParams = {
+      baseURL: "http://example.org/rest",
+    };
+    expect(clientParams).toHaveProperty("baseURL", "http://example.org/rest");
+    // CAUTION
+    expect(api.makeURL("test", clientParams).toString()).not.toBe(
+      "http://example.org/rest/test",
     );
   });
 });
