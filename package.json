@@ -1,6 +1,6 @@
 {
   "name": "@clarin-eric/fcs-sru-aggregator-api-adapter-typescript",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A typescript API adapter for the CLARIN FCS SRU Aggregator REST API",
   "keywords": [
     "fcs",

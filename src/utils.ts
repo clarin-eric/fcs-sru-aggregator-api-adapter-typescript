@@ -58,6 +58,24 @@ export type ClientParams = CustomParams & Omit<RequestInit, "method">;
 
 // --------------------------------------------------------------------------
 
+export class RequestError extends Error {
+  url: string;
+  method: string;
+  status: number | undefined;
+
+  constructor(
+    message: string | undefined,
+    url: string,
+    method: string,
+    status: number | undefined = undefined,
+  ) {
+    super(message);
+    this.url = url;
+    this.method = method;
+    this.status = status;
+  }
+}
+
 export function makeURL(
   url: string,
   { baseURL, consortia }: { baseURL: string } & ExtraScopingParams,
@@ -91,7 +109,12 @@ export async function doGet<R>(
     signal,
   });
   if (!response.ok) {
-    throw new Error(`Response status: ${response.status}`);
+    throw new RequestError(
+      `Response status: ${response.status}`,
+      response.url,
+      "GET",
+      response.status,
+    );
   }
 
   const result = await response.json();
@@ -105,7 +128,12 @@ export async function doPost<R>(
 ) {
   const response = await doPostRaw(url, data, params);
   if (!response.ok) {
-    throw new Error(`Response status: ${response.status}`);
+    throw new RequestError(
+      `Response status: ${response.status}`,
+      response.url,
+      "POST",
+      response.status,
+    );
   }
 
   const result = await response.json();

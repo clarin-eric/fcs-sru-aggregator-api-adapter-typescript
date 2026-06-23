@@ -158,7 +158,24 @@ export async function postSearch(
   params: ClientParams,
   searchParams: PostSearchData,
 ) {
-  const result = await doPost<string>("search", searchParams, params);
+  const result = await doPost<string>(
+    "search",
+    [
+      // for URLSearchParams.constructor()
+      ...Object.entries({
+        query: searchParams.query,
+        queryType: searchParams.queryType,
+        language: searchParams.language,
+        numberOfResults: searchParams.numberOfResults,
+      }),
+      // nested arrays must be handled manually
+      ...searchParams.resourceIds.map((resourceId) => [
+        "resourceIds[]",
+        resourceId,
+      ]),
+    ],
+    params,
+  );
   console.debug("[postSearch]", searchParams, result);
   return result; // UUID with searchID
 }
