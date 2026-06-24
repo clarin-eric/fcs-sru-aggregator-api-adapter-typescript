@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-06-24
+
+### Added
+
+- Response caching (`ETag` support) for `doGet`
+  - `utils.ts#CustomParams` has two new optional parameters:
+    - `enableETagCache`: if GET `fetch` calls should try to use `ETag` for caching, (default: `false`)
+    - `cacheStorage`: Storage-like, use custom `RAMStorage` (as default Storage, `sessionStorage` is likely limited to ~5MB which might be exceeded easily)
+  - add tests for response caching
+
 ## [2.0.1] - 2026-06-23
 
 ### Added
@@ -92,7 +102,8 @@ Extracted FCS Aggregator REST API adatper code from [`textplus-fcs-store`](https
 - Modularized typed interfaces with `axios` request methods.
 - Mini test suite. WIP.
 
-[Unreleased]: https://github.com/clarin-eric/fcs-sru-aggregator-api-adapter-typescript/compare/v2.0.1...HEAD
+[Unreleased]: https://github.com/clarin-eric/fcs-sru-aggregator-api-adapter-typescript/compare/v2.1.0...HEAD
+[2.1.0]: https://github.com/clarin-eric/fcs-sru-aggregator-api-adapter-typescript/compare/v2.0.1...v2.1.0
 [2.0.1]: https://github.com/clarin-eric/fcs-sru-aggregator-api-adapter-typescript/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/clarin-eric/fcs-sru-aggregator-api-adapter-typescript/compare/v1.5.1...v2.0.0
 [1.5.1]: https://github.com/clarin-eric/fcs-sru-aggregator-api-adapter-typescript/compare/v1.5.0...v1.5.1
