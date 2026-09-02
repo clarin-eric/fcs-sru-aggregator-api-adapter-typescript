@@ -6,8 +6,13 @@ on:
       - "v[0-9]*.[0-9]*.[0-9]*"
 
 jobs:
-  build-and-check-full:
+  build-and-check-and-publish:
     runs-on: ubuntu-latest
+
+    environment: npmjs
+    permissions:
+      contents: read
+      id-token: write
 
     steps:
       - uses: actions/checkout@v7
@@ -17,12 +22,10 @@ jobs:
         with:
           node-version: "25.x"
           registry-url: "https://registry.npmjs.org"
+          package-manager-cache: false
 
       - name: Install using lockfile
         run: npm ci
-
-      - name: Run tests
-        run: npm test
 
       - name: Build package
         run: npm run build
@@ -30,29 +33,14 @@ jobs:
       - name: Test package types
         run: npx -y @arethetypeswrong/cli --pack .
 
+      - name: Run tests
+        run: npm test
+
+      - name: Publish to NPMjs
+        run: npm publish --provenance --access public
+
       - name: Upload built package
         uses: actions/upload-artifact@v7
         with:
           name: Package
           path: dist
-
-  publish-to-npmjs:
-    needs: build-and-check-full
-    runs-on: ubuntu-latest
-
-    environment: npmjs
-    permissions:
-      contents: read
-      id-token: write
-
-    steps:
-      - name: Download built package
-        uses: actions/download-artifact@v8
-        with:
-          name: Package
-          path: dist
-
-      - name: Publish to NPMjs
-        run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
