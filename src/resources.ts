@@ -127,7 +127,9 @@ export type Capability = SearchCapability | "AUTHENTICATED_SEARCH";
 export type SearchCapability =
   | "BASIC_SEARCH"
   | "ADVANCED_SEARCH"
-  | "LEX_SEARCH";
+  | "LEX_SEARCH"
+  | "LEXICAL_SEARCH"
+  | "LEXICAL_SEARCH_V1_0";
 
 /**
  * Resource availability restriction types
@@ -176,24 +178,28 @@ export type LayerType =
 export type LexFieldType =
   | "entryId"
   | "lemma"
-  | "translation"
   | "transcription"
+  | "translation"
   | "phonetic"
   | "definition"
   | "etymology"
   | "case"
-  | "number"
+  | "degree"
   | "gender"
+  | "mood"
+  | "number"
   | "pos"
+  | "tense"
+  | "grammar"
   | "baseform"
   | "segmentation"
   | "sentiment"
   | "frequency"
   | "antonym"
-  | "hyponym"
-  | "hypernym"
-  | "meronym"
   | "holonym"
+  | "hypernym"
+  | "hyponym"
+  | "meronym"
   | "synonym"
   | "related"
   | "ref"
