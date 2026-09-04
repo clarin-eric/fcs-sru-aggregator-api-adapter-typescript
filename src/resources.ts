@@ -206,7 +206,7 @@ export type LexFieldType =
   | "senseRef"
   | "citation";
 
-export type VirtualLexFieldType = "lang";
+export type VirtualLexFieldType = "any" | "lang";
 
 // --------------------------------------------------------------------------
 // API methods

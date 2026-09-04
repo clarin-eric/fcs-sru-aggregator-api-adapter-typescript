@@ -48,8 +48,8 @@ function makeTimeoutSignal(
 // --------------------------------------------------------------------------
 
 interface CustomParams {
-  /** base URL for all requests */
-  baseURL: string;
+  /** base URL for all requests, must be an absolute, valid URL! */
+  baseURL: string | URL;
   /** (optional) request timeout */
   timeout?: number;
 
@@ -248,7 +248,7 @@ export class RequestError extends Error {
 
 export function makeURL(
   url: string,
-  { baseURL, consortia }: { baseURL: string } & ExtraScopingParams,
+  { baseURL, consortia }: { baseURL: string | URL } & ExtraScopingParams,
 ) {
   const uUrl = new URL(url, baseURL);
 
